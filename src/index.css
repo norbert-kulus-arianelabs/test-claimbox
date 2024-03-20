@@ -1,0 +1,59 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+:root {
+
+  font-family: 'Sarabun', sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: #f6f6f8;
+  background-color: #fff;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+}
+
+a {
+  @apply font-medium text-blue-600 no-underline;
+}
+
+a:hover {
+  @apply text-blue-500;
+}
+
+body {
+  @apply min-w-[320px] min-h-screen m-0 text-black;
+}
+
+h1 {
+  @apply text-3xl leading-tight text-black;
+}
+
+h2 {
+  @apply text-2xl leading-[130%] text-black;
+}
+
+h3 {
+  @apply text-[17px] leading-[130%] text-secondary;
+}
+
+h4 {
+  @apply text-[14px] leading-[130%] text-secondary;
+}
+
+p {
+  @apply text-[14px] leading-[130%] text-gray;
+}
+
+
+
+
+button {
+  @apply leading-none;
+}

@@ -1,0 +1,73 @@
+# Simple workflow for deploying static content to GitHub Pages
+name: Deploy static content to Pages
+
+on:
+
+  workflow_dispatch:
+    # Inputs the workflow accepts.
+      inputs:
+   
+        VITE_HEDERA_NETWORK:
+          type: choice
+          description: Select network
+          options:
+          - testnet
+          - mainnet
+
+        VITE_HEDERA_SMART_CONTRACT_ID:
+          description: Contract ID
+          required: false
+          type: string
+         
+  # Runs on pushes targeting the default branch
+  push:
+    branches: ['main']
+
+# Sets the GITHUB_TOKEN permissions to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow one concurrent deployment
+concurrency:
+  group: 'pages'
+  cancel-in-progress: true
+
+jobs:
+  # Single deploy job since we're just deploying
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Node
+        uses: actions/setup-node@v3        
+      - uses: pnpm/action-setup@v2
+        with:
+          version: latest
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'pnpm'
+      - name: Install dependencies
+        run: pnpm install --no-frozen-lockfile
+      - name: Build
+        run: pnpm run build
+        env:
+          VITE_HEDERA_NETWORK: ${{ vars.VITE_HEDERA_NETWORK || inputs.VITE_HEDERA_NETWORK }}
+          VITE_HEDERA_SMART_CONTRACT_ID: ${{ vars.VITE_HEDERA_SMART_CONTRACT_ID || inputs.VITE_HEDERA_SMART_CONTRACT_ID }}
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v2
+        with:
+          # Upload dist repository
+          path: './dist'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2
